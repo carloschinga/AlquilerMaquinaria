@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Principal</title>
+  </head>
+
+  <body>
+    <!-- MENU FIJO -->
+    <div class="menu">
+      <h3>Dashboard</h3>
+      <a th:href="@{/dashboard/contratos}">Contratos</a>
+      <a th:href="@{/dashboard/maquinarias-disponibles}"
+        >Maquinarias disponibles</a
+      >
+      <a th:href="@{/dashboard/cuentas-por-cobrar}">Cuentas por cobrar</a>
+      <a th:href="@{/dashboard/pagos-pendientes}">Pagos pendientes</a>
+
+      <h3>Contratos</h3>
+      <a th:href="@{/contratos/nuevo}">Nuevo Contrato</a>
+      <a th:href="@{/contratos/listado}">Listado</a>
+
+      <h3>Maestros</h3>
+      <a th:href="@{/maestros/clientes}">Clientes</a>
+      <a th:href="@{/maestros/maquinarias}">Maquinarias</a>
+      <a th:href="@{/maestros/choferes}">Choferes</a>
+      <a th:href="@{/maestros/proveedores}">Proveedores</a>
+
+      <h3>Operativa</h3>
+      <a th:href="@{/operativa/carga-combustible}">Carga Combustible</a>
+      <a th:href="@{/operativa/pago-proveedores}">Pago Proveedores</a>
+      <a th:href="@{/operativa/pago-choferes}">Pago Choferes</a>
+
+      <h3>Reportes</h3>
+      <a th:href="@{/reportes/rentabilidad}">Rentabilidad</a>
+      <a th:href="@{/reportes/utilizacion-maquinaria}"
+        >Utilización de Maquinaria</a
+      >
+      <a th:href="@{/reportes/deuda-pendiente}">Deuda Pendiente</a>
+    </div>
+
+    <!-- AQUI SE CARGA TODO DINÁMICAMENTE -->
+    <div th:replace="${content}"></div>
+  </body>
+</html>
