@@ -2,17 +2,17 @@ package com.example.alquilermaquinaria.Services;
 
 import java.util.List;
 
-import com.example.alquilermaquinaria.entity.Maquinaria;
+import com.example.alquilermaquinaria.dto.MaquinariaDTO;
 
 public interface MaquinariaService {
 
-    List<Maquinaria> findAll();
+    MaquinariaDTO registrar(MaquinariaDTO dto);
 
-    Maquinaria findById(Integer id);
+    MaquinariaDTO actualizar(Integer id, MaquinariaDTO dto);
 
-    Maquinaria create(Maquinaria maquinaria);
+    MaquinariaDTO obtenerPorId(Integer id);
 
-    Maquinaria update(Integer id, Maquinaria maquinaria);
+    List<MaquinariaDTO> listar();
 
-    void delete(Integer id);
+    void eliminar(Integer id);
 }

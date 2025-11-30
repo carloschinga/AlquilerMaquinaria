@@ -5,45 +5,46 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.alquilermaquinaria.Repository.ClienteRepository;
+import com.example.alquilermaquinaria.dto.ClienteDTO;
 import com.example.alquilermaquinaria.entity.Cliente;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-    private final ClienteRepository clienteRepository;
+    private final ClienteRepository repo;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
+    public ClienteServiceImpl(ClienteRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll();
+    public List<Cliente> listar() {
+        return repo.findAll();
     }
 
     @Override
-    public Cliente findById(Integer id) {
-        return clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+    public Cliente buscarPorId(Integer id) {
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    public Cliente create(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public Cliente guardarDesdeDTO(ClienteDTO dto) {
+        Cliente c = new Cliente();
+
+        if (dto.getClienteId() != null) {
+            c = buscarPorId(dto.getClienteId());
+        }
+
+        c.setNombre(dto.getNombre());
+        c.setRucDni(dto.getRucDni());
+        c.setTelefono(dto.getTelefono());
+        c.setDireccion(dto.getDireccion());
+
+        return repo.save(c);
     }
 
     @Override
-    public Cliente update(Integer id, Cliente cliente) {
-        Cliente original = findById(id);
-        original.setNombre(cliente.getNombre());
-        original.setRucDni(cliente.getRucDni());
-        original.setTelefono(cliente.getTelefono());
-        original.setDireccion(cliente.getDireccion());
-        return clienteRepository.save(original);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        clienteRepository.deleteById(id);
+    public void eliminar(Integer id) {
+        repo.deleteById(id);
     }
 }

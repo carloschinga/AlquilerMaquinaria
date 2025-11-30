@@ -2,17 +2,16 @@ package com.example.alquilermaquinaria.Services;
 
 import java.util.List;
 
+import com.example.alquilermaquinaria.dto.ClienteDTO;
 import com.example.alquilermaquinaria.entity.Cliente;
 
 public interface ClienteService {
 
-    List<Cliente> findAll();
+    List<Cliente> listar();
 
-    Cliente findById(Integer id);
+    Cliente buscarPorId(Integer id);
 
-    Cliente create(Cliente cliente);
+    Cliente guardarDesdeDTO(ClienteDTO dto);
 
-    Cliente update(Integer id, Cliente cliente);
-
-    void delete(Integer id);
+    void eliminar(Integer id);
 }
