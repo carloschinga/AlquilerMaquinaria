@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <h2>Proveedores</h2>
+
+  <button class="btn btn-primary mb-3" onclick="abrirModalNuevoProveedor()">
+    Nuevo Proveedor
+  </button>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>RUC</th>
+        <th>Contacto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="body-proveedores"></tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalProveedor" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTituloProveedor">Nuevo Proveedor</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formProveedor">
+          <input type="hidden" id="proveedorId" />
+
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" id="nombreProveedor" class="form-control" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">RUC</label>
+            <input type="text" id="rucProveedor" class="form-control" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Contacto</label>
+            <input type="text" id="contactoProveedor" class="form-control" />
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="guardarProveedor()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/proveedores.js"></script>
