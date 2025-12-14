@@ -2,6 +2,8 @@ package com.example.alquilermaquinaria.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,5 +26,6 @@ public class Proveedor {
     private String contacto;
 
     @OneToMany(mappedBy = "proveedor")
+    @JsonManagedReference("proveedor-carga")
     private List<CargaCombustible> cargasCombustible;
 }

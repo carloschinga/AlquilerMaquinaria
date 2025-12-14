@@ -2,53 +2,65 @@ const API_MAQ = "/api/maquinarias";
 let modalMaq = null;
 
 function initMaquinarias() {
-    const modalElement = document.getElementById("modalMaquinaria");
-    if (modalElement) {
-        modalMaq = new bootstrap.Modal(modalElement);
-        cargarMaquinarias();
-    } else {
-        console.log("Esperando a que se cargue el modal...");
-        setTimeout(initMaquinarias, 100);
-    }
+  const body = document.getElementById("body-maquinarias");
+
+  // Si no estamos en maquinarias, ignoramos
+  if (!body) return;
+
+  const modalElement = document.getElementById("modalMaquinaria");
+  modalMaq = modalElement ? new bootstrap.Modal(modalElement) : null;
+
+  cargarMaquinarias();
 }
+document.addEventListener("vista-cargada", (e) => {
+  if (e.detail.includes("maquinarias.html")) {
+    initMaquinarias();
+  }
+});
+
+
 
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMaquinarias);
+    document.addEventListener("DOMContentLoaded", initMaquinarias);
 } else {
-    initMaquinarias();
+    initMaquinarias();
 }
 
 async function cargarMaquinarias() {
-    try {
-        const res = await fetch(API_MAQ);
-        const data = await res.json();
+    try {
+        const res = await fetch(API_MAQ);
+        const data = await res.json();
 
-        const body = document.getElementById("body-maquinarias");
-        if (!body) return;
+        const body = document.getElementById("body-maquinarias");
+        if (!body) return;
 
-        body.innerHTML = "";
+        body.innerHTML = "";
 
-        data.forEach((m) => {
-            body.innerHTML += `
-                <tr>
-                    <td>${m.maquinaId}</td>
-                    <td>${m.tipo}</td>
-                    <td>${m.modelo}</td>
-                    <td>${m.serialInterno}</td>
-                    <td>${m.horasAcumuladas}</td>
-                    <td>${m.estado}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning" onclick="editarMaquinaria(${m.maquinaId})">Editar</button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminarMaquinaria(${m.maquinaId})">Eliminar</button>
-                    </td>
-                </tr>
-            `;
-        });
+        data.forEach((m) => {
+            // Lógica para asignar color al badge según el estado
+            let badgeClass = "bg-warning"; // Por defecto: Mantenimiento
+            if (m.estado === "Disponible") badgeClass = "bg-success"; // Verde para Disponible
+            if (m.estado === "Ocupada") badgeClass = "bg-danger"; // Rojo para Ocupada (no disponible)
 
-    } catch (error) {
-        console.error("Error cargando maquinarias:", error);
-    }
+            body.innerHTML += `<tr>
+<td><strong>#${m.maquinaId}</strong></td>
+<td>${m.tipo}</td>
+<td>${m.modelo}</td>
+<td>${m.serialInterno}</td>
+<td>${m.horasAcumuladas} h</td>
+<td><span class="badge ${badgeClass} badge-estado">${m.estado}</span></td>
+<td>
+<button class="btn btn-sm btn-editar me-1" onclick="editarMaquinaria(${m.maquinaId})">✏️ Editar</button>
+<button class="btn btn-sm btn-eliminar" onclick="eliminarMaquinaria(${m.maquinaId})">🗑️ Eliminar</button>
+</td>
+</tr>
+`;
+        });
+
+    } catch (error) {
+        console.error("Error cargando maquinarias:", error);
+    }
 }
 
 function abrirModalNuevoMaquinaria() {
@@ -103,20 +115,35 @@ async function guardarMaquinaria() {
     const method = id ? "PUT" : "POST";
     const url = id ? `${API_MAQ}/${id}` : API_MAQ;
 
+    const errorDiv = document.getElementById("errorMaquinaria");
+    errorDiv.classList.add("d-none");
+    errorDiv.innerText = "";
+
     try {
-        await fetch(url, {
+        const res = await fetch(url, {
             method: method,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(maquinaria)
         });
 
-        modalMaq.hide();
+        if (!res.ok) {
+            const errorMsg = await res.text();
+            errorDiv.innerText = errorMsg;
+            errorDiv.classList.remove("d-none");
+            return;
+        }
+
+        modalMaq?.hide();
         cargarMaquinarias();
 
     } catch (error) {
         console.error("Error guardando maquinaria:", error);
+        errorDiv.innerText = "Error inesperado al guardar la maquinaria.";
+        errorDiv.classList.remove("d-none");
     }
 }
+
+
 
 async function eliminarMaquinaria(id) {
     if (!confirm("¿Seguro que deseas eliminar esta maquinaria?")) return;

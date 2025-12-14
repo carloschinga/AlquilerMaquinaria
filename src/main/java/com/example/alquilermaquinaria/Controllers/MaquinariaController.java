@@ -37,16 +37,30 @@ public class MaquinariaController {
     }
 
     @PostMapping
-    public ResponseEntity<MaquinariaDTO> registrar(@RequestBody MaquinariaDTO dto) {
-        return ResponseEntity.ok(maquinariaService.registrar(dto));
+    public ResponseEntity<?> registrar(@RequestBody MaquinariaDTO dto) {
+        try {
+            MaquinariaDTO nueva = maquinariaService.registrar(dto);
+            return ResponseEntity.ok(nueva);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe una maquinaria con ese serial interno");
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MaquinariaDTO> actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Integer id,
             @RequestBody MaquinariaDTO dto
     ) {
-        return ResponseEntity.ok(maquinariaService.actualizar(id, dto));
+        try {
+            MaquinariaDTO actualizada = maquinariaService.actualizar(id, dto);
+            return ResponseEntity.ok(actualizada);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe una maquinaria con ese serial interno");
+        }
     }
 
     @DeleteMapping("/{id}")

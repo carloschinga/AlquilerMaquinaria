@@ -1,0 +1,265 @@
+<style>
+  /* Estilos para el dashboard - Creativo y moderno */
+  .dashboard-container {
+    padding: 25px;
+    background: #f5f5f5;
+    min-height: calc(100vh - 80px);
+  }
+
+  .dashboard-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .dashboard-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 70px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9500, #f5a623);
+    border-radius: 2px;
+  }
+
+  .dashboard-subtitle {
+    color: #7b8a8b;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .dashboard-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    border-top: 5px solid;
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .dashboard-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #ff9500, #f5a623);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .dashboard-card:hover::before {
+    opacity: 1;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+  }
+
+  .card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #f0f0f0;
+  }
+
+  .stat-item:last-child {
+    border-bottom: none;
+  }
+
+  .stat-label {
+    color: #7b8a8b;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .stat-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #2c3e50;
+  }
+
+  .currency {
+    color: #27ae60;
+    font-weight: 700;
+  }
+
+  .highlight-stat {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 149, 0, 0.08),
+      rgba(245, 166, 35, 0.05)
+    );
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border-left: 3px solid #f5a623;
+  }
+
+  .top-machine {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 15px;
+    background: rgba(52, 152, 219, 0.08);
+    border-radius: 10px;
+    border-left: 3px solid #3498db;
+  }
+
+  .machine-icon {
+    font-size: 1.8rem;
+    margin-right: 15px;
+    color: #3498db;
+  }
+
+  .machine-info h5 {
+    margin: 0;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  .machine-info p {
+    margin: 5px 0 0;
+    color: #7b8a8b;
+    font-size: 0.9rem;
+  }
+
+  .hours-badge {
+    display: inline-block;
+    background: #ff9500;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  .card-footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.85rem;
+    color: #95a5a6;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+  }
+
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f0f0f0;
+    border-top: 5px solid #ff9500;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .error-message {
+    background: #e74c3c;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 20px 0;
+    font-weight: 500;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+
+<div class="dashboard-container">
+  <h1 class="dashboard-title">Dashboard General</h1>
+  <p class="dashboard-subtitle">
+    Resumen completo del estado de contratos, maquinaria y proveedores
+  </p>
+
+  <div class="loading-container" id="loading-indicator">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="dashboard-grid" id="cards-dashboard" style="display: none">
+    <!-- Las tarjetas se cargarán dinámicamente aquí -->
+  </div>
+
+  <div id="error-container" style="display: none"></div>
+</div>

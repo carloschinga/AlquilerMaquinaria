@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.alquilermaquinaria.Services.ProveedorService;
+import com.example.alquilermaquinaria.dto.ProveedorDTO;
 import com.example.alquilermaquinaria.entity.Proveedor;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class ProveedorController {
     private final ProveedorService proveedorService;
 
     @GetMapping
-    public ResponseEntity<List<Proveedor>> listar() {
+    public ResponseEntity<List<ProveedorDTO>> listar() {
         return ResponseEntity.ok(proveedorService.findAll());
     }
 
@@ -37,16 +38,30 @@ public class ProveedorController {
     }
 
     @PostMapping
-    public ResponseEntity<Proveedor> registrar(@RequestBody Proveedor proveedor) {
-        return ResponseEntity.ok(proveedorService.create(proveedor));
+    public ResponseEntity<?> registrar(@RequestBody Proveedor proveedor) {
+        try {
+            Proveedor nuevo = proveedorService.create(proveedor);
+            return ResponseEntity.ok(nuevo);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe un proveedor con ese RUC");
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Proveedor> actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Integer id,
             @RequestBody Proveedor proveedor
     ) {
-        return ResponseEntity.ok(proveedorService.update(id, proveedor));
+        try {
+            Proveedor actualizado = proveedorService.update(id, proveedor);
+            return ResponseEntity.ok(actualizado);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe un proveedor con ese RUC");
+        }
     }
 
     @DeleteMapping("/{id}")

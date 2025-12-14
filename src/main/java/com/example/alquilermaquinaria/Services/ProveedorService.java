@@ -2,11 +2,12 @@ package com.example.alquilermaquinaria.Services;
 
 import java.util.List;
 
+import com.example.alquilermaquinaria.dto.ProveedorDTO;
 import com.example.alquilermaquinaria.entity.Proveedor;
 
 public interface ProveedorService {
 
-    List<Proveedor> findAll();
+    List<ProveedorDTO> findAll();
 
     Proveedor findById(Integer id);
 

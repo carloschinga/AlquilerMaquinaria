@@ -1,11 +1,15 @@
 package com.example.alquilermaquinaria.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.alquilermaquinaria.Repository.CargaCombustibleRepository;
+import com.example.alquilermaquinaria.dto.CargaCombustibleDTO;
 import com.example.alquilermaquinaria.entity.CargaCombustible;
+import com.example.alquilermaquinaria.entity.Maquinaria;
+import com.example.alquilermaquinaria.entity.Proveedor;
 
 @Service
 public class CargaCombustibleServiceImpl implements CargaCombustibleService {
@@ -16,37 +20,86 @@ public class CargaCombustibleServiceImpl implements CargaCombustibleService {
         this.repo = repo;
     }
 
-    @Override
-    public List<CargaCombustible> findAll() {
-        return repo.findAll();
+    private CargaCombustibleDTO toDTO(CargaCombustible carga) {
+        CargaCombustibleDTO dto = new CargaCombustibleDTO();
+
+        dto.setCargaId(carga.getCargaId());
+        dto.setMaquinariaId(carga.getMaquinaria().getMaquinaId());
+        dto.setMaquinaModelo(carga.getMaquinaria().getModelo());
+        dto.setMaquinaTipo(carga.getMaquinaria().getTipo());
+        dto.setProveedorId(carga.getProveedor().getProveedorId());
+        dto.setProveedorNombre(carga.getProveedor().getNombre());
+        dto.setFechaCarga(carga.getFechaCarga().toString());
+        dto.setLitrosCargados(carga.getLitrosCargados());
+        dto.setCostoTotal(carga.getCostoTotal());
+        dto.setCostoUnitario(carga.getCostoUnitario());
+        dto.setLecturaHorometro(carga.getLecturaHorometro());
+        dto.setFacturaNum(carga.getFacturaNum());
+        dto.setEstadoPago(carga.getEstadoPago());
+
+        return dto;
+    }
+
+    private CargaCombustible toEntity(CargaCombustibleDTO dto) {
+        CargaCombustible carga = new CargaCombustible();
+
+        Maquinaria maq = new Maquinaria();
+        maq.setMaquinaId(dto.getMaquinariaId());
+
+        Proveedor prov = new Proveedor();
+        prov.setProveedorId(dto.getProveedorId());
+
+        carga.setMaquinaria(maq);
+        carga.setProveedor(prov);
+        carga.setFechaCarga(LocalDateTime.parse(dto.getFechaCarga()));
+        carga.setLitrosCargados(dto.getLitrosCargados());
+        carga.setCostoTotal(dto.getCostoTotal());
+        carga.setCostoUnitario(dto.getCostoUnitario());
+        carga.setLecturaHorometro(dto.getLecturaHorometro());
+        carga.setFacturaNum(dto.getFacturaNum());
+        carga.setEstadoPago(dto.getEstadoPago());
+
+        return carga;
     }
 
     @Override
-    public CargaCombustible findById(Integer id) {
+    public List<CargaCombustibleDTO> findAll() {
+        return repo.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    @Override
+    public CargaCombustibleDTO findById(Integer id) {
         return repo.findById(id)
+                .map(this::toDTO)
                 .orElseThrow(() -> new RuntimeException("Carga de combustible no encontrada"));
     }
 
     @Override
-    public CargaCombustible create(CargaCombustible carga) {
-        return repo.save(carga);
+    public CargaCombustibleDTO create(CargaCombustibleDTO dto) {
+        CargaCombustible saved = repo.save(toEntity(dto));
+        return toDTO(saved);
     }
 
     @Override
-    public CargaCombustible update(Integer id, CargaCombustible carga) {
-        CargaCombustible original = findById(id);
+    public CargaCombustibleDTO update(Integer id, CargaCombustibleDTO dto) {
+        CargaCombustible original = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Carga de combustible no encontrada"));
 
-        original.setMaquinaria(carga.getMaquinaria());
-        original.setProveedor(carga.getProveedor());
-        original.setFechaCarga(carga.getFechaCarga());
-        original.setLitrosCargados(carga.getLitrosCargados());
-        original.setCostoTotal(carga.getCostoTotal());
-        original.setCostoUnitario(carga.getCostoUnitario());
-        original.setLecturaHorometro(carga.getLecturaHorometro());
-        original.setFacturaNum(carga.getFacturaNum());
-        original.setEstadoPago(carga.getEstadoPago());
+        // actualizamos campos
+        original.setMaquinaria(toEntity(dto).getMaquinaria());
+        original.setProveedor(toEntity(dto).getProveedor());
+        original.setFechaCarga(LocalDateTime.parse(dto.getFechaCarga()));
+        original.setLitrosCargados(dto.getLitrosCargados());
+        original.setCostoTotal(dto.getCostoTotal());
+        original.setCostoUnitario(dto.getCostoUnitario());
+        original.setLecturaHorometro(dto.getLecturaHorometro());
+        original.setFacturaNum(dto.getFacturaNum());
+        original.setEstadoPago(dto.getEstadoPago());
 
-        return repo.save(original);
+        return toDTO(repo.save(original));
     }
 
     @Override

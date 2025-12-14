@@ -11,9 +11,12 @@ public class CargaCombustibleDTO {
 
     @NotNull(message = "La maquinaria es obligatoria")
     private Integer maquinariaId;
+    private String maquinaModelo;
+    private String maquinaTipo;
 
     @NotNull(message = "El proveedor es obligatorio")
     private Integer proveedorId;
+    private String proveedorNombre;
 
     @NotNull(message = "La fecha es obligatoria")
     private String fechaCarga; // formato ISO (String)

@@ -2,6 +2,8 @@ package com.example.alquilermaquinaria.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,10 +24,12 @@ public class AsignacionOperacion {
 
     @ManyToOne
     @JoinColumn(name = "contrato_id")
+    @JsonBackReference("contrato-asignaciones")
     private ContratoAlquiler contrato;
 
     @ManyToOne
     @JoinColumn(name = "chofer_id")
+    @JsonBackReference("chofer-asignaciones")
     private Chofer chofer;
 
     private LocalDate fechaTurno;

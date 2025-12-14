@@ -1,0 +1,373 @@
+<style>
+  .contratos-header {
+    background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+  }
+
+  .contratos-header h3 {
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-nuevo-contrato {
+    background-color: #2c3e50;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-nuevo-contrato:hover {
+    background-color: #1a252f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  .table-contratos-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .table-contratos {
+    margin: 0;
+  }
+
+  .table-contratos thead {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+
+  .table-contratos thead th {
+    color: black;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 15px 10px;
+  }
+
+  .table-contratos tbody tr {
+    transition: all 0.2s ease;
+  }
+
+  .table-contratos tbody tr:hover {
+    background-color: #fff5e6;
+    transform: scale(1.01);
+    box-shadow: 0 2px 8px rgba(245, 166, 35, 0.15);
+  }
+
+  .table-contratos tbody td {
+    vertical-align: middle;
+    padding: 12px 10px;
+    border-color: #e9ecef;
+  }
+
+  .btn-editar-contrato {
+    background-color: #f5a623;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-editar-contrato:hover {
+    background-color: #ff9500;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(245, 166, 35, 0.3);
+    color: white;
+  }
+
+  .btn-eliminar-contrato {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-eliminar-contrato:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    color: white;
+  }
+
+  .modal-header-contrato {
+    background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+    color: white;
+    border: none;
+  }
+
+  .modal-header-contrato .modal-title {
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header-contrato .btn-close {
+    filter: brightness(0) invert(1);
+  }
+
+  .modal-body-contrato {
+    padding: 30px;
+  }
+
+  .modal-body-contrato .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  .modal-body-contrato .form-control,
+  .modal-body-contrato .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  .modal-body-contrato .form-control:focus,
+  .modal-body-contrato .form-select:focus {
+    border-color: #f5a623;
+    box-shadow: 0 0 0 0.2rem rgba(245, 166, 35, 0.25);
+  }
+
+  .modal-footer-contrato {
+    border-top: 2px solid #e9ecef;
+    padding: 20px 30px;
+  }
+
+  .btn-cancelar-contrato {
+    background-color: #95a5a6;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-cancelar-contrato:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .btn-guardar-contrato {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+  }
+
+  .btn-guardar-contrato:hover {
+    background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+    color: white;
+  }
+
+  .badge-estado-pago {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+</style>
+
+<div class="container mt-4">
+  <div
+    class="contratos-header d-flex justify-content-between align-items-center"
+  >
+    <h3>Gestión de Contratos</h3>
+    <button class="btn btn-nuevo-contrato" onclick="abrirModalNuevoContrato()">
+      Nuevo Contrato
+    </button>
+  </div>
+
+  <div class="table-contratos-container">
+    <div class="table-responsive">
+      <table
+        class="table table-contratos table-striped table-bordered text-center"
+      >
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Maquinaria</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin Estimada</th>
+            <th>Estado Pago</th>
+            <th>Monto Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="body-contratos"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ------------------------------------------------------------- -->
+<!-- MODAL CONTRATO -->
+<!-- ------------------------------------------------------------- -->
+<div class="modal fade" id="modalContrato" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header modal-header-contrato">
+        <h5 class="modal-title" id="modalTituloContrato">Nuevo Contrato</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body modal-body-contrato">
+        <form id="formContrato">
+          <input type="hidden" id="contratoId" />
+
+          <div class="row g-3">
+            <!-- Cliente -->
+            <div class="col-md-6">
+              <label class="form-label"> Cliente</label>
+              <select
+                id="clienteIdcontrato"
+                class="form-select"
+                required
+              ></select>
+            </div>
+
+            <!-- Maquinaria -->
+            <div class="col-md-6">
+              <label class="form-label"> Maquinaria</label>
+              <select
+                id="maquinaIdcontrato"
+                class="form-select"
+                required
+              ></select>
+            </div>
+
+            <!-- Fecha Inicio -->
+            <div class="col-md-6">
+              <label class="form-label"> Fecha Inicio</label>
+              <input
+                type="datetime-local"
+                id="fechaInicio"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Fecha Fin Estimada -->
+            <div class="col-md-6">
+              <label class="form-label"> Fecha Fin Estimada</label>
+              <input
+                type="datetime-local"
+                id="fechaFinEstimada"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Horómetro Inicial -->
+            <div class="col-md-4">
+              <label class="form-label">⏱ Horómetro Inicial</label>
+              <input
+                type="number"
+                id="horometroInicial"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Tarifa Aplicada -->
+            <div class="col-md-4">
+              <label class="form-label"> Tarifa Aplicada (S/.)</label>
+              <input
+                type="number"
+                id="tarifaAplicada"
+                step="0.01"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Estado Pago -->
+            <div class="col-md-4">
+              <label class="form-label"> Estado de Pago</label>
+              <select id="estadoPago" class="form-select">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Pagado">Pagado</option>
+                <option value="Parcial">Parcial</option>
+              </select>
+            </div>
+
+            <!-- Condición Entrega -->
+            <div class="col-md-12">
+              <label class="form-label"> Condición de Entrega</label>
+              <input type="text" id="condicionEntrega" class="form-control" />
+            </div>
+
+            <!-- Chofer -->
+            <div class="col-md-4">
+              <label class="form-label"> Chofer</label>
+              <select id="choferId" class="form-select">
+                <option value="0">Sin chofer</option>
+              </select>
+            </div>
+
+            <!-- Horas Iniciales -->
+            <div class="col-md-4">
+              <label class="form-label"> Horas Iniciales</label>
+              <input
+                type="number"
+                id="horasIniciales"
+                class="form-control"
+                value="0"
+              />
+            </div>
+
+            <!-- Fecha Turno Inicial -->
+            <div class="col-md-4">
+              <label class="form-label"> Fecha Turno Inicial</label>
+              <input
+                type="datetime-local"
+                id="fechaTurnoInicial"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer modal-footer-contrato">
+        <button class="btn btn-cancelar-contrato" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button class="btn btn-guardar-contrato" onclick="guardarContrato()">
+          Guardar Contrato
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<style>
+  .pagos-pendientes-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .pagos-pendientes-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 20px;
+  }
+
+  .pagos-pendientes-header h4 {
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .table-pendientes thead {
+    background-color: #f5a623;
+    color: white;
+  }
+
+  .table-pendientes thead th {
+    color: black;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-color: #e09117;
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .table-pendientes tbody td {
+    vertical-align: middle;
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .table-pendientes tbody tr:hover {
+    background-color: #fff8f0;
+  }
+
+  .monto-pendiente-col {
+    font-weight: 700;
+    color: #e74c3c;
+    background-color: #fff0f0;
+    border-left: 3px solid #e74c3c !important;
+    text-align: right !important;
+  }
+
+  .turnos-pendientes-col {
+    font-weight: 600;
+    color: #34495e;
+    text-align: center;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="card pagos-pendientes-card shadow">
+    <div class="card-header pagos-pendientes-header">
+      <h4 class="mb-0">
+        Pagos Pendientes a Choferes
+        <i class="fas fa-exclamation-triangle"></i>
+      </h4>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered table-hover table-pendientes"
+          id="tablaPagosPendientes"
+        >
+          <thead>
+            <tr>
+              <th>ID Chofer</th>
+              <th>Nombre del Chofer</th>
+              <th>Monto Pendiente (S/.)</th>
+              <th>Turnos Pendientes</th>
+            </tr>
+          </thead>
+          <tbody id="bodyPagosPendientes"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.alquilermaquinaria.Repository.ProveedorRepository;
+import com.example.alquilermaquinaria.dto.ProveedorDTO;
 import com.example.alquilermaquinaria.entity.Proveedor;
 
 @Service
@@ -17,8 +18,18 @@ public class ProveedorServiceImpl implements ProveedorService {
     }
 
     @Override
-    public List<Proveedor> findAll() {
-        return proveedorRepository.findAll();
+    public List<ProveedorDTO> findAll() {
+        return proveedorRepository.findAll()
+                .stream()
+                .map(p -> {
+                    ProveedorDTO dto = new ProveedorDTO();
+                    dto.setProveedorId(p.getProveedorId());
+                    dto.setNombre(p.getNombre());
+                    dto.setRuc(p.getRuc());
+                    dto.setContacto(p.getContacto());
+                    return dto;
+                })
+                .toList();
     }
 
     @Override

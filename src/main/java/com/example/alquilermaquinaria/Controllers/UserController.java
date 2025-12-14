@@ -1,15 +1,24 @@
 package com.example.alquilermaquinaria.Controllers;
 
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.alquilermaquinaria.Services.UserService;
-import com.example.alquilermaquinaria.dto.LoginRequestDTO;
 import com.example.alquilermaquinaria.dto.PasswordChangeDTO;
 import com.example.alquilermaquinaria.dto.UserRegisterDTO;
 import com.example.alquilermaquinaria.dto.UserUpdateDTO;
 import com.example.alquilermaquinaria.entity.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -64,10 +73,17 @@ public class UserController {
     /**
      * POST /api/users/login : Para Inicio de Sesión
      */
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginDTO) {
-        return userService.login(loginDTO)
-                .map(user -> ResponseEntity.ok().body("Inicio de sesión exitoso. Usuario ID: " + user.getId()))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas."));
+    @GetMapping("/me")
+    public ResponseEntity<?> getUsuarioLogueado(Authentication auth) {
+        if (auth == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No autenticado");
+        }
+
+        User user = userService.findByUsername(auth.getName());
+        return ResponseEntity.ok(Map.of(
+                "username", user.getNombreUsuario(),
+                "rol", user.getRole().getNombreRol()
+        ));
     }
+
 }

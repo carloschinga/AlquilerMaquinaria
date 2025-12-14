@@ -2,17 +2,17 @@ package com.example.alquilermaquinaria.Services;
 
 import java.util.List;
 
-import com.example.alquilermaquinaria.entity.CargaCombustible;
+import com.example.alquilermaquinaria.dto.CargaCombustibleDTO;
 
 public interface CargaCombustibleService {
 
-    List<CargaCombustible> findAll();
+    List<CargaCombustibleDTO> findAll();
 
-    CargaCombustible findById(Integer id);
+    CargaCombustibleDTO findById(Integer id);
 
-    CargaCombustible create(CargaCombustible carga);
+    CargaCombustibleDTO create(CargaCombustibleDTO carga);
 
-    CargaCombustible update(Integer id, CargaCombustible carga);
+    CargaCombustibleDTO update(Integer id, CargaCombustibleDTO carga);
 
     void delete(Integer id);
 }

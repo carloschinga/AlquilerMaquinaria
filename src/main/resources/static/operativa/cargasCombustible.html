@@ -1,0 +1,329 @@
+<style>
+  .cargas-header {
+    background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+  }
+
+  .cargas-header h3 {
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-nueva-carga {
+    background-color: #2c3e50;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-nueva-carga:hover {
+    background-color: #1a252f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  .table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .table-cargas thead {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+
+  .table-cargas thead th {
+    color: black;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 15px 10px;
+    vertical-align: middle;
+  }
+
+  .table-cargas tbody tr:hover {
+    background-color: #fff5e6;
+    transform: scale(1.005);
+    transition: all 0.2s ease;
+  }
+
+  .table-cargas tbody td {
+    vertical-align: middle;
+    font-size: 0.9rem;
+  }
+
+  .btn-editar {
+    background-color: #f5a623;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-editar:hover {
+    background-color: #ff9500;
+    transform: translateY(-1px);
+    color: white;
+  }
+
+  .btn-eliminar {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-eliminar:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+    color: white;
+  }
+
+  .modal-header-carga {
+    background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+    color: white;
+    border: none;
+  }
+
+  .modal-header-carga .modal-title {
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header-carga .btn-close {
+    filter: brightness(0) invert(1);
+  }
+
+  .modal-body-carga .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+  }
+
+  .modal-body-carga .form-control,
+  .modal-body-carga .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  .modal-body-carga .form-control:focus,
+  .modal-body-carga .form-select:focus {
+    border-color: #f5a623;
+    box-shadow: 0 0 0 0.2rem rgba(245, 166, 35, 0.25);
+  }
+
+  .modal-footer-carga {
+    border-top: 2px solid #e9ecef;
+    padding: 15px 25px;
+    justify-content: flex-end;
+  }
+
+  /* Botón Guardar */
+  .btn-guardar-carga {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+  }
+
+  .btn-guardar-carga:hover {
+    background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  /* Botón Cancelar */
+  .btn-cancelar {
+    background-color: #95a5a6;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-cancelar:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  /* Badge de Estado */
+  .badge-estado {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    min-width: 90px;
+    display: inline-block;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="cargas-header d-flex justify-content-between align-items-center">
+    <h3>Registro de Cargas de Combustible</h3>
+    <button class="btn btn-nueva-carga" onclick="abrirModalNuevaCarga()">
+      Nueva Carga
+    </button>
+  </div>
+
+  <div class="table-container">
+    <div class="table-responsive">
+      <table class="table table-cargas table-striped table-hover text-center">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Maquinaria</th>
+            <th>Proveedor</th>
+            <th>Fecha Carga</th>
+            <th>Litros (L)</th>
+            <th>Costo Unitario</th>
+            <th>Costo Total</th>
+            <th>Horómetro (h)</th>
+            <th>Factura Nº</th>
+            <th>Estado Pago</th>
+            <th style="width: 120px">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody id="body-cargas-combustible"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCarga" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header modal-header-carga">
+        <h5 class="modal-title" id="modalTituloCarga">
+          Nueva Carga de Combustible
+        </h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body modal-body-carga">
+        <form id="formCarga">
+          <input type="hidden" id="cargaId" />
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Maquinaria</label>
+              <select class="form-select" id="maquinariaId" required>
+                <option value="">Seleccione una máquina</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Proveedor</label>
+              <select class="form-select" id="proveedorId" required>
+                <option value="">Seleccione un proveedor</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Fecha y Hora de Carga</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                id="fechaCarga"
+                required
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Litros Cargados</label>
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                id="litrosCargados"
+                required
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Costo Unitario</label>
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                id="costoUnitario"
+                required
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Costo Total</label>
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                id="costoTotal"
+                required
+                readonly
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Lectura Horómetro</label>
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                id="lecturaHorometro"
+                required
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Factura Nº</label>
+              <input type="text" class="form-control" id="facturaNum" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label"> Estado de Pago</label>
+              <select class="form-select" id="estadoPago">
+                <option value="Pendiente">PENDIENTE</option>
+                <option value="Pagado">PAGADO</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer modal-footer-carga">
+        <button class="btn btn-cancelar" data-bs-dismiss="modal">Cerrar</button>
+        <button class="btn btn-guardar-carga" onclick="guardarCarga()">
+          Guardar Carga
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,10 @@
 package com.example.alquilermaquinaria.Services;
 
-
 import java.util.Optional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.alquilermaquinaria.Repository.RoleRepository;
 import com.example.alquilermaquinaria.Repository.UserRepository;
@@ -9,12 +12,9 @@ import com.example.alquilermaquinaria.dto.LoginRequestDTO;
 import com.example.alquilermaquinaria.dto.PasswordChangeDTO;
 import com.example.alquilermaquinaria.dto.UserRegisterDTO;
 import com.example.alquilermaquinaria.dto.UserUpdateDTO;
-import com.example.alquilermaquinaria.entity.EstadoUsuario;
+import com.example.alquilermaquinaria.entity.EstadoUsuario; // Necesitas esta dependencia
 import com.example.alquilermaquinaria.entity.Role;
 import com.example.alquilermaquinaria.entity.User;
-import org.springframework.security.crypto.password.PasswordEncoder; // Necesitas esta dependencia
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -110,5 +110,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(Integer userId) {
         return userRepository.findById(userId);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByNombreUsuario(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }

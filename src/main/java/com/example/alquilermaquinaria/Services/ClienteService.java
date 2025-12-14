@@ -3,15 +3,14 @@ package com.example.alquilermaquinaria.Services;
 import java.util.List;
 
 import com.example.alquilermaquinaria.dto.ClienteDTO;
-import com.example.alquilermaquinaria.entity.Cliente;
 
 public interface ClienteService {
 
-    List<Cliente> listar();
+    List<ClienteDTO> listar();
 
-    Cliente buscarPorId(Integer id);
+    ClienteDTO buscarPorId(Integer id);
 
-    Cliente guardarDesdeDTO(ClienteDTO dto);
+    ClienteDTO guardarDesdeDTO(ClienteDTO dto);
 
     void eliminar(Integer id);
 }

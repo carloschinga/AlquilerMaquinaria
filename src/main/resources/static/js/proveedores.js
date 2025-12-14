@@ -2,15 +2,21 @@ const API_PROV = "/api/proveedores";
 let modalProveedor = null;
 
 function initProveedores() {
+  const body = document.getElementById("body-proveedores"); 
+
+  if (!body) return;
+
   const modalElement = document.getElementById("modalProveedor");
-  if (modalElement) {
-    modalProveedor = new bootstrap.Modal(modalElement);
-    cargarProveedores();
-  } else {
-    console.log("Esperando a que se cargue el modal de proveedores...");
-    setTimeout(initProveedores, 100);
-  }
+  modalProveedor = modalElement ? new bootstrap.Modal(modalElement) : null;
+
+  cargarProveedores();
 }
+
+document.addEventListener("vista-cargada", (e) => {
+  if (e.detail.includes("proveedores.html")) {
+    initProveedores();
+  }
+});
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initProveedores);
@@ -29,18 +35,21 @@ async function cargarProveedores() {
     body.innerHTML = "";
 
     data.forEach((prov) => {
-      body.innerHTML += `
-        <tr>
-            <td>${prov.proveedorId}</td>
-            <td>${prov.nombre}</td>
-            <td>${prov.ruc}</td>
-            <td>${prov.contacto ?? ""}</td>
-            <td>
-                <button class="btn btn-warning btn-sm" onclick="editarProveedor(${prov.proveedorId})">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="eliminarProveedor(${prov.proveedorId})">Eliminar</button>
-            </td>
-        </tr>
-      `;
+      body.innerHTML += `<tr>
+<td><strong>#${prov.proveedorId}</strong></td>
+<td>${prov.nombre}</td>
+<td>${prov.ruc}</td>
+<td>${prov.contacto ?? ""}</td>
+<td>
+<button class="btn btn-sm btn-editar me-1" onclick="editarProveedor(${
+        prov.proveedorId
+      })"> Editar</button>
+<button class="btn btn-sm btn-eliminar" onclick="eliminarProveedor(${
+        prov.proveedorId
+      })"> Eliminar</button>
+</td>
+</tr>
+`;
     });
   } catch (error) {
     console.error("Error cargando proveedores:", error);
@@ -70,7 +79,8 @@ async function editarProveedor(id) {
       if (modalElement) modalProveedor = new bootstrap.Modal(modalElement);
     }
 
-    document.getElementById("modalTituloProveedor").innerText = "Editar Proveedor";
+    document.getElementById("modalTituloProveedor").innerText =
+      "Editar Proveedor";
 
     document.getElementById("proveedorId").value = prov.proveedorId;
     document.getElementById("nombreProveedor").value = prov.nombre;
@@ -78,7 +88,6 @@ async function editarProveedor(id) {
     document.getElementById("contactoProveedor").value = prov.contacto ?? "";
 
     modalProveedor.show();
-
   } catch (error) {
     console.error("Error cargando proveedor:", error);
   }
@@ -96,17 +105,30 @@ async function guardarProveedor() {
   const metodo = id ? "PUT" : "POST";
   const url = id ? `${API_PROV}/${id}` : API_PROV;
 
+  const errorDiv = document.getElementById("errorProveedor");
+  errorDiv.classList.add("d-none");
+  errorDiv.innerText = "";
+
   try {
-    await fetch(url, {
+    const res = await fetch(url, {
       method: metodo,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(proveedor),
     });
 
+    if (!res.ok) {
+      const errorMsg = await res.text();
+      errorDiv.innerText = errorMsg;
+      errorDiv.classList.remove("d-none");
+      return;
+    }
+
     modalProveedor?.hide();
     cargarProveedores();
   } catch (error) {
     console.error("Error guardando proveedor:", error);
+    errorDiv.innerText = "Error inesperado al guardar el proveedor.";
+    errorDiv.classList.remove("d-none");
   }
 }
 

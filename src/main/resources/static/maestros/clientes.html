@@ -2,45 +2,228 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Clientes</title>
-
-    <!-- Bootstrap (puedes cambiarlo si usas otro estilo) -->
+    <title>SafeWay - Clientes</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <style>
+      .clientes-header {
+        background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+      }
+
+      .clientes-header h3 {
+        color: white;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-nuevo-cliente {
+        background-color: #2c3e50;
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px 25px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-nuevo-cliente:hover {
+        background-color: #1a252f;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        color: white;
+      }
+
+      .table-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .table-clientes thead {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      }
+
+      .table-clientes thead th {
+        color: black;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        border: none;
+        padding: 15px 10px;
+      }
+
+      .table-clientes tbody tr:hover {
+        background-color: #fff5e6;
+        transform: scale(1.005);
+        transition: all 0.2s ease;
+      }
+
+      .table-clientes tbody td {
+        vertical-align: middle;
+      }
+
+      .btn-editar {
+        background-color: #f5a623;
+        border: none;
+        color: white;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: all 0.2s ease;
+      }
+
+      .btn-editar:hover {
+        background-color: #ff9500;
+        transform: translateY(-1px);
+        color: white;
+      }
+
+      .btn-eliminar {
+        background-color: #e74c3c;
+        border: none;
+        color: white;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: all 0.2s ease;
+      }
+
+      .btn-eliminar:hover {
+        background-color: #c0392b;
+        transform: translateY(-1px);
+        color: white;
+      }
+
+      /* Modal Personalizado */
+      .modal-header-cliente {
+        background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+        color: white;
+        border: none;
+      }
+
+      .modal-header-cliente .modal-title {
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-header-cliente .btn-close {
+        filter: brightness(0) invert(1);
+      }
+
+      .modal-body-cliente .form-label,
+      .modal-body-cliente label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 5px;
+        font-size: 0.95rem;
+      }
+
+      .modal-body-cliente .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+      }
+
+      .modal-body-cliente .form-control:focus {
+        border-color: #f5a623;
+        box-shadow: 0 0 0 0.2rem rgba(245, 166, 35, 0.25);
+      }
+
+      .modal-footer-cliente {
+        border-top: 2px solid #e9ecef;
+        padding: 15px 25px;
+      }
+
+      /* Botón Guardar */
+      .btn-guardar-cliente {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px 30px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+      }
+
+      .btn-guardar-cliente:hover {
+        background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+        color: white;
+      }
+
+      /* Botón Cancelar */
+      .btn-cancelar {
+        background-color: #95a5a6; /* Gris */
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px 25px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-cancelar:hover {
+        background-color: #7f8c8d;
+        transform: translateY(-2px);
+        color: white;
+      }
+    </style>
   </head>
 
-  <body class="bg-light">
+  <body>
     <div class="container mt-4">
-      <h2 class="mb-4">Clientes</h2>
+      <div
+        class="clientes-header d-flex justify-content-between align-items-center"
+      >
+        <h3>Gestión de Clientes</h3>
+        <button
+          class="btn btn-nuevo-cliente"
+          onclick="abrirModalNuevoCliente()"
+        >
+          Nuevo Cliente
+        </button>
+      </div>
 
-      <!-- Botón nuevo -->
-      <button class="btn btn-primary mb-3" onclick="abrirModalNuevoCliente()">
-        Nuevo Cliente
-      </button>
-
-      <!-- Tabla -->
-      <table class="table table-bordered table-striped" id="tabla-clientes">
-        <thead class="table-dark">
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>RUC/DNI</th>
-            <th>Teléfono</th>
-            <th>Dirección</th>
-            <th style="width: 120px">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="body-clientes"></tbody>
-      </table>
+      <div class="table-container">
+        <div class="table-responsive">
+          <table
+            class="table table-clientes table-striped table-hover text-center"
+            id="tabla-clientes"
+          >
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>RUC/DNI</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
+                <th style="width: 150px">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="body-clientes"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- Modal para crear/editar -->
     <div class="modal fade" id="modalCliente" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header modal-header-cliente">
             <h5 class="modal-title" id="modalTitulo">Nuevo Cliente</h5>
             <button
               type="button"
@@ -49,38 +232,51 @@
             ></button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body modal-body-cliente">
             <form id="formCliente">
               <input type="hidden" id="clienteId" />
+              <div
+                id="errorCliente"
+                class="alert alert-danger d-none"
+                role="alert"
+              ></div>
 
               <div class="mb-3">
-                <label>Nombre</label>
+                <label> Nombre</label>
                 <input type="text" id="nombre" class="form-control" required />
               </div>
 
               <div class="mb-3">
-                <label>RUC / DNI</label>
-                <input type="text" id="rucDni" class="form-control" required />
+                <label> RUC / DNI</label>
+                <input
+                  type="number"
+                  id="rucDni"
+                  class="form-control"
+                  required
+                  pattern="^\d{8}(\d{3})?$"
+                  maxlength="11"
+                  minlength="8"
+                />
               </div>
 
               <div class="mb-3">
-                <label>Teléfono</label>
+                <label> Teléfono</label>
                 <input type="text" id="telefono" class="form-control" />
               </div>
 
               <div class="mb-3">
-                <label>Dirección</label>
+                <label> Dirección</label>
                 <input type="text" id="direccion" class="form-control" />
               </div>
             </form>
           </div>
 
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
+          <div class="modal-footer modal-footer-cliente">
+            <button class="btn btn-cancelar" data-bs-dismiss="modal">
               Cancelar
             </button>
-            <button class="btn btn-primary" onclick="guardarCliente()">
-              Guardar
+            <button class="btn btn-guardar-cliente" onclick="guardarCliente()">
+              Guardar Cliente
             </button>
           </div>
         </div>

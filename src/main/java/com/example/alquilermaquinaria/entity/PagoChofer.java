@@ -28,9 +28,9 @@ public class PagoChofer {
 
     private Double montoPagado;
 
-    private String metodoPago; // efectivo, transferencia, etc.
+    private String metodoPago;
 
     private String descripcion;
 
-    private String estado; // pagado, pendiente, observado
+    private String estado;
 }

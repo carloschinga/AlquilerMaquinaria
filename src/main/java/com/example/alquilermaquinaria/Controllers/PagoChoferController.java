@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.alquilermaquinaria.Services.PagoChoferService;
 import com.example.alquilermaquinaria.dto.PagoChoferDTO;
-import com.example.alquilermaquinaria.entity.Chofer;
 import com.example.alquilermaquinaria.entity.PagoChofer;
 
 import jakarta.validation.Valid;
@@ -41,40 +40,24 @@ public class PagoChoferController {
 
     @PostMapping
     public PagoChofer crear(@Valid @RequestBody PagoChoferDTO dto) {
-
         PagoChofer pago = new PagoChofer();
-
-        Chofer c = new Chofer();
-        c.setChoferId(dto.getChoferId());
-
-        pago.setChofer(c);
         pago.setFechaPago(LocalDateTime.parse(dto.getFechaPago()));
         pago.setMontoPagado(dto.getMontoPagado());
         pago.setMetodoPago(dto.getMetodoPago());
         pago.setDescripcion(dto.getDescripcion());
         pago.setEstado(dto.getEstado());
-
-        return service.create(pago);
+        return service.create(pago, dto.getChoferId());
     }
 
     @PutMapping("/{id}")
-    public PagoChofer actualizar(
-            @PathVariable Integer id,
-            @Valid @RequestBody PagoChoferDTO dto) {
-
+    public PagoChofer actualizar(@PathVariable Integer id, @Valid @RequestBody PagoChoferDTO dto) {
         PagoChofer pago = new PagoChofer();
-
-        Chofer c = new Chofer();
-        c.setChoferId(dto.getChoferId());
-
-        pago.setChofer(c);
         pago.setFechaPago(LocalDateTime.parse(dto.getFechaPago()));
         pago.setMontoPagado(dto.getMontoPagado());
         pago.setMetodoPago(dto.getMetodoPago());
         pago.setDescripcion(dto.getDescripcion());
         pago.setEstado(dto.getEstado());
-
-        return service.update(id, pago);
+        return service.update(id, pago, dto.getChoferId());
     }
 
     @DeleteMapping("/{id}")

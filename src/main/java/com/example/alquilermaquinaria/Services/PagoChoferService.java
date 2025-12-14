@@ -10,9 +10,9 @@ public interface PagoChoferService {
 
     PagoChofer findById(Integer id);
 
-    PagoChofer create(PagoChofer pago);
+    PagoChofer create(PagoChofer pago, Integer choferId);
 
-    PagoChofer update(Integer id, PagoChofer pago);
+    PagoChofer update(Integer id, PagoChofer pago, Integer choferId);
 
     void delete(Integer id);
 }

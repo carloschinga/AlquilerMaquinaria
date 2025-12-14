@@ -2,6 +2,7 @@ package com.example.alquilermaquinaria.Controllers;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.alquilermaquinaria.Services.ClienteService;
 import com.example.alquilermaquinaria.dto.ClienteDTO;
-import com.example.alquilermaquinaria.entity.Cliente;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -29,26 +29,39 @@ public class ClienteController {
 
     // LISTAR
     @GetMapping
-    public List<Cliente> listar() {
+    public List<ClienteDTO> listar() {
         return service.listar();
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
-    public Cliente buscar(@PathVariable Integer id) {
+    public ClienteDTO buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
-    public Cliente guardar(@RequestBody ClienteDTO dto) {
-        return service.guardarDesdeDTO(dto);
+    public ResponseEntity<?> guardar(@RequestBody ClienteDTO dto) {
+        try {
+            ClienteDTO nuevo = service.guardarDesdeDTO(dto);
+            return ResponseEntity.ok(nuevo);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe un cliente con ese RUC/DNI");
+        }
     }
 
-    // EDITAR
     @PutMapping("/{id}")
-    public Cliente actualizar(@PathVariable Integer id, @RequestBody ClienteDTO dto) {
+    public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody ClienteDTO dto) {
         dto.setClienteId(id);
-        return service.guardarDesdeDTO(dto);
+        try {
+            ClienteDTO actualizado = service.guardarDesdeDTO(dto);
+            return ResponseEntity.ok(actualizado);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe un cliente con ese RUC/DNI");
+        }
     }
 
     // ELIMINAR

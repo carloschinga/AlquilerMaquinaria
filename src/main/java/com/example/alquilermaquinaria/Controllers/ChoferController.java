@@ -37,16 +37,30 @@ public class ChoferController {
     }
 
     @PostMapping
-    public ResponseEntity<Chofer> registrar(@RequestBody Chofer chofer) {
-        return ResponseEntity.ok(choferService.create(chofer));
+    public ResponseEntity<?> registrar(@RequestBody Chofer chofer) {
+        try {
+            Chofer nuevo = choferService.create(chofer);
+            return ResponseEntity.ok(nuevo);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe un chofer con esa identificación");
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Chofer> actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Integer id,
             @RequestBody Chofer chofer
     ) {
-        return ResponseEntity.ok(choferService.update(id, chofer));
+        try {
+            Chofer actualizado = choferService.update(id, chofer);
+            return ResponseEntity.ok(actualizado);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Ya existe un chofer con esa identificación");
+        }
     }
 
     @DeleteMapping("/{id}")

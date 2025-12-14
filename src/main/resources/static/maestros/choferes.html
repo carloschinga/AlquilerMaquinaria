@@ -1,0 +1,292 @@
+<style>
+  /* --- Estilos de Tema SafeWay (Choferes) --- */
+
+  /* Encabezado Principal (Naranja) */
+  .choferes-header {
+    background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+  }
+
+  .choferes-header h3 {
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Botón de Acción Principal (Nuevo Chofer) */
+  .btn-nuevo-chofer {
+    background-color: #2c3e50; /* Azul oscuro */
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-nuevo-chofer:hover {
+    background-color: #1a252f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  /* Contenedor de la Tabla */
+  .table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Estilo de la Tabla */
+  .table-choferes thead {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+
+  .table-choferes thead th {
+    color: black;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 15px 10px;
+  }
+
+  .table-choferes tbody tr:hover {
+    background-color: #fff5e6; /* Fondo de hover en naranja suave */
+    transform: scale(1.005);
+    transition: all 0.2s ease;
+  }
+
+  .table-choferes tbody td {
+    vertical-align: middle;
+  }
+
+  /* Botones de Acciones */
+  .btn-editar {
+    background-color: #f5a623; /* Naranja acento */
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-editar:hover {
+    background-color: #ff9500;
+    transform: translateY(-1px);
+    color: white;
+  }
+
+  .btn-eliminar {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-eliminar:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+    color: white;
+  }
+
+  .modal-header-chofer {
+    background: linear-gradient(135deg, #ff9500 0%, #f5a623 100%);
+    color: white;
+    border: none;
+  }
+
+  .modal-header-chofer .modal-title {
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header-chofer .btn-close {
+    filter: brightness(0) invert(1);
+  }
+
+  .modal-body-chofer .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+  }
+
+  .modal-body-chofer .form-control,
+  .modal-body-chofer .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  .modal-body-chofer .form-control:focus,
+  .modal-body-chofer .form-select:focus {
+    border-color: #f5a623;
+    box-shadow: 0 0 0 0.2rem rgba(245, 166, 35, 0.25);
+  }
+
+  .modal-footer-chofer {
+    border-top: 2px solid #e9ecef;
+    padding: 15px 25px;
+    justify-content: flex-end;
+  }
+
+  /* Botón Guardar */
+  .btn-guardar-chofer {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+  }
+
+  .btn-guardar-chofer:hover {
+    background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+    color: white;
+  }
+
+  .btn-cancelar {
+    background-color: #95a5a6;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-cancelar:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .badge-estado {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+</style>
+
+<div class="container mt-4">
+  <div
+    class="choferes-header d-flex justify-content-between align-items-center"
+  >
+    <h3>Gestión de Choferes</h3>
+    <button class="btn btn-nuevo-chofer" onclick="abrirModalNuevoChofer()">
+      Nuevo Chofer
+    </button>
+  </div>
+
+  <div class="table-container">
+    <div class="table-responsive">
+      <table class="table table-choferes table-striped table-hover text-center">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Identificación</th>
+            <th>Tarifa por Hora</th>
+            <th>Estado</th>
+            <th style="width: 150px">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="body-choferes"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalChofer" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header modal-header-chofer">
+        <h5 class="modal-title" id="modalTituloChofer">Nuevo Chofer</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body modal-body-chofer">
+        <form id="formChofer">
+          <input type="hidden" id="choferId" />
+          <div
+            id="errorChofer"
+            class="alert alert-danger d-none"
+            role="alert"
+          ></div>
+
+          <div class="mb-3">
+            <label class="form-label"> Nombre</label>
+            <input
+              type="text"
+              id="nombreChofer"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> Identificación</label>
+            <input
+              type="text"
+              id="identificacionChofer"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> Tarifa por Hora</label>
+            <input
+              type="number"
+              id="tarifaChofer"
+              class="form-control"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> Estado</label>
+            <select id="estadoChofer" class="form-select" required>
+              <option value="Activo">ACTIVO</option>
+              <option value="Ocupado">OCUPADO</option>
+              <option value="Inactivo">INACTIVO</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer modal-footer-chofer">
+        <button class="btn btn-cancelar" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button class="btn btn-guardar-chofer" onclick="guardarChofer()">
+          Guardar Chofer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
