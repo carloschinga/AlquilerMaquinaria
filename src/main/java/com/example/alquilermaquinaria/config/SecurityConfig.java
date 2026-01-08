@@ -31,9 +31,15 @@ public class SecurityConfig {
     // DaoAuthenticationProvider
     @Bean
     public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        // 1. Instanciamos vacio
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
+        // 2. Asignamos el UserDetailsService con el setter
+        provider.setUserDetailsService(userDetailsService);
+
+        // 3. Asignamos el PasswordEncoder
         provider.setPasswordEncoder(passwordEncoder());
+
         return provider;
     }
 
@@ -49,36 +55,51 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                // Páginas públicas
-                .requestMatchers("/index.html", "/api/users/login", "/api/users/register", "/api/users/me").permitAll()
-                // Páginas protegidas
-                .requestMatchers("/principal.html").authenticated()
-                // Endpoints compartidos por todos los logueados
-                .requestMatchers("/api/clientes/**", "/api/maquinarias/**", "/api/proveedores/**", "/api/choferes/**")
-                .hasAnyRole("OPERADOR_ALQUILER", "OPERADOR_PATIO", "GERENTE", "CONTABILIDAD", "ADMINISTRADOR")
-                // Endpoints específicos por rol, incluyendo ADMINISTRADOR
-                .requestMatchers("/api/reportes/**", "/api/contratos/utilizacion")
-                .hasAnyRole("GERENTE", "CONTABILIDAD", "ADMINISTRADOR")
-                .requestMatchers("/api/contratos/**", "/api/asignaciones-operacion/**")
-                .hasAnyRole("OPERADOR_ALQUILER", "ADMINISTRADOR")
-                .requestMatchers("/api/cargas-combustible/**", "/api/pagos-proveedores/**", "/api/pagos-choferes/**", "/api/pagos-pendientes/**")
-                .hasAnyRole("OPERADOR_PATIO", "CONTABILIDAD", "ADMINISTRADOR")
-                .requestMatchers("/api/pagos-chofer/**", "/api/pagos-clientes/**")
-                .hasAnyRole("CONTABILIDAD", "ADMINISTRADOR")
-                // Cualquier otra request requiere login
-                .anyRequest().authenticated()
+                        // Paginas publicas y recursos estaticos
+                        .requestMatchers("/index.html", "/api/users/login", "/api/users/register", "/api/users/me").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/iconos/**", "/images/**").permitAll()
+
+                        // NUEVO: Gestion de Usuarios (Solo Admins)
+                        // Esto protege el listado, creacion admin, eliminacion y bloqueo
+                        // Nota: Como login/register estan arriba con permitAll, no se ven afectados
+                        .requestMatchers("/api/users", "/api/users/**")
+                        .hasAnyRole("ADMINISTRADOR", "SUPER_ADMINISTRADOR")
+
+                        // Paginas protegidas
+                        .requestMatchers("/principal.html").authenticated()
+
+                        // Endpoints compartidos por todos los logueados
+                        .requestMatchers("/api/clientes/**", "/api/maquinarias/**", "/api/proveedores/**", "/api/choferes/**")
+                        .hasAnyRole("OPERADOR_ALQUILER", "OPERADOR_PATIO", "GERENTE", "CONTABILIDAD", "ADMINISTRADOR", "SUPER ADMIN","Super administrador", "SUPER_ADMINISTRADOR")
+
+                        // Endpoints especificos por rol, incluyendo ADMINISTRADOR
+                        .requestMatchers("/api/reportes/**", "/api/contratos/utilizacion")
+                        .hasAnyRole("GERENTE", "CONTABILIDAD", "ADMINISTRADOR", "SUPER_ADMINISTRADOR")
+
+                        .requestMatchers("/api/contratos/**", "/api/asignaciones-operacion/**")
+                        .hasAnyRole("OPERADOR_ALQUILER", "ADMINISTRADOR", "SUPER_ADMINISTRADOR")
+
+                        .requestMatchers("/api/cargas-combustible/**", "/api/pagos-proveedores/**", "/api/pagos-choferes/**", "/api/pagos-pendientes/**")
+                        .hasAnyRole("OPERADOR_PATIO", "CONTABILIDAD", "ADMINISTRADOR", "SUPER_ADMINISTRADOR")
+
+                        .requestMatchers("/api/pagos-chofer/**", "/api/pagos-clientes/**")
+                        .hasAnyRole("CONTABILIDAD", "ADMINISTRADOR", "SUPER_ADMINISTRADOR")
+
+                        // Cualquier otra request requiere login
+                        .anyRequest().authenticated()
                 )
-                // FormLogin para manejar sesión
+                // FormLogin para manejar sesion
                 .formLogin(form -> form
-                .loginPage("/index.html")
-                .loginProcessingUrl("/api/users/login")
-                .defaultSuccessUrl("/principal.html", true)
-                .permitAll()
+                        .loginPage("/index.html")
+                        .loginProcessingUrl("/api/users/login")
+                        .defaultSuccessUrl("/principal.html", true)
+                        .failureUrl("/index.html?error=true")
+                        .permitAll()
                 )
                 .logout(logout -> logout
-                .logoutUrl("/api/users/logout")
-                .logoutSuccessUrl("/index.html")
-                .permitAll()
+                        .logoutUrl("/api/users/logout")
+                        .logoutSuccessUrl("/index.html")
+                        .permitAll()
                 );
 
         return http.build();

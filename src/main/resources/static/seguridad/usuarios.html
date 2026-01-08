@@ -1,0 +1,92 @@
+<div class="container-fluid animate-fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-0">Gestión de Personal</h2>
+            <p class="text-muted small">Administre quién tiene acceso al sistema</p>
+        </div>
+        <button class="btn btn-primary shadow-sm" onclick="abrirModalUsuario()">
+            <i class="fas fa-user-plus me-2"></i>Nuevo Usuario
+        </button>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="tablaUsuarios">
+                    <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Usuario</th>
+                        <th>Nombre Completo</th>
+                        <th>Rol Asignado</th>
+                        <th>Estado</th>
+                        <th class="text-end pe-4">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="border-top-0">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalUsuario" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold" id="modalTitulo">Datos del Usuario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formUsuario">
+                    <input type="hidden" id="userId">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Usuario (Login)</label>
+                        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ej. jgonzalez" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Nombre Completo</label>
+                        <input type="text" class="form-control" id="nombreCompleto" placeholder="Ej. Juan Gonzalez" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="correoElectronico" placeholder="juan@empresa.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Rol del Sistema</label>
+                        <select class="form-select" id="rolId" required>
+                            <option value="" selected disabled>Seleccione nivel de acceso...</option>
+                            <option value="1">ADMINISTRADOR</option>
+                            <option value="2">GERENTE</option>
+                            <option value="3">CONTABILIDAD</option>
+                            <option value="4">OPERADOR_PATIO</option>
+                            <option value="5">OPERADOR_ALQUILER</option>
+                            <option value="6">SUPER_ADMINISTRADOR</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Contraseña (Opcional)</label>
+                        <input type="password" class="form-control" id="nuevaContrasena" placeholder="Dejar en blanco para no cambiar">
+                        <small class="text-muted" id="hintPasswordEdit" style="display:none;">Solo escriba aquí si desea cambiar la clave actual.</small>
+                    </div>
+
+                    <div class="alert alert-warning d-flex align-items-center" role="alert" id="msgPassword">
+                        <i class="fas fa-key me-2"></i>
+                        <div class="small">
+                            Contraseña temporal por defecto: <strong>1234</strong>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarUsuario()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>

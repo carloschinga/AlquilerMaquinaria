@@ -265,16 +265,23 @@ function exportarPDF() {
    UTILIDADES FECHA
 ------------------------------------- */
 function formatearFechaTabla(fechaIso) {
-  if (!fechaIso) return "N/A"; 
-  const date = new Date(fechaIso.replace(" ", "T")); 
-  return date.toLocaleString("es-CL", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+    if (!fechaIso) return "N/A";
+
+    const fechaStr = String(fechaIso);
+
+    const fechaFormato = fechaStr.replace(" ", "T");
+    const date = new Date(fechaFormato);
+
+    if (isNaN(date.getTime())) return fechaStr;
+
+    return date.toLocaleString("es-CL", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    });
 }
 
 // Exponer funciones globalmente

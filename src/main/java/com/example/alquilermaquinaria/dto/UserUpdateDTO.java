@@ -6,5 +6,7 @@ import lombok.Data;
 public class UserUpdateDTO {
     private String nombreCompleto;
     private String correoElectronico;
-    // No se incluye nombreUsuario ni contrasena para evitar cambios accidentales
+    private Integer rolId;
+    private String nuevaContrasena;
+    // No se incluye nombreUsuario para evitar cambios accidentales
 }

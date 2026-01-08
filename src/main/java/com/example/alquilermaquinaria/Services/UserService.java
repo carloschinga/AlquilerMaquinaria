@@ -7,6 +7,8 @@ import com.example.alquilermaquinaria.dto.PasswordChangeDTO;
 import com.example.alquilermaquinaria.dto.UserRegisterDTO;
 import com.example.alquilermaquinaria.dto.UserUpdateDTO;
 import com.example.alquilermaquinaria.entity.User;
+import com.example.alquilermaquinaria.dto.UserCreateAdminDTO;
+import java.util.List;
 
 public interface UserService {
 
@@ -24,4 +26,10 @@ public interface UserService {
     Optional<User> findById(Integer userId);
 
     User findByUsername(String username);
+
+    User crearUsuarioAdministrativo(UserCreateAdminDTO userCreateDTO);
+    List<User> listarTodosLosUsuarios();
+
+    void deleteUser(Integer userId);
+    User toggleUserStatus(Integer userId);
 }
