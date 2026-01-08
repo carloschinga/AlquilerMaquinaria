@@ -73,7 +73,7 @@ async function cargarReporteRentabilidad() {
     }
 }
 
-// Filtrar Datos
+// Filtrar Datos (CORREGIDO: Conversión a String)
 function filtrarRentabilidad() {
     const clienteInput = document.getElementById("filtro-cliente");
     const fechaInput = document.getElementById("filtro-fechaInicio");
@@ -89,8 +89,10 @@ function filtrarRentabilidad() {
     const data = JSON.parse(tablaEl.dataset.fullData);
 
     const filtrados = data.filter((c) => {
-        const nombreCliente = (c[1] ?? "").toLowerCase();
-        const fecha = c[3] ?? "";
+        // CORRECCIÓN AQUÍ: String(c[1]) para evitar errores si llega un número
+        const nombreCliente = String(c[1] ?? "").toLowerCase();
+        const fecha = String(c[3] ?? "");
+
         const cumpleCliente = !cliente || nombreCliente.includes(cliente);
         const cumpleFecha = !fechaInicio || fecha.startsWith(fechaInicio);
         return cumpleCliente && cumpleFecha;
@@ -99,7 +101,7 @@ function filtrarRentabilidad() {
     renderizarTabla(filtrados);
 }
 
-// Obtener datos filtrados para exportación
+// Obtener datos filtrados para exportación (CORREGIDO: Conversión a String)
 function getDatosFiltrados() {
     const clienteInput = document.getElementById("filtro-cliente");
     const fechaInput = document.getElementById("filtro-fechaInicio");
@@ -117,8 +119,9 @@ function getDatosFiltrados() {
     let totalUtilidad = 0;
 
     const datos = data.filter((c) => {
-        const nombreCliente = (c[1] ?? "").toLowerCase();
-        const fecha = c[3] ?? "";
+        // CORRECCIÓN AQUÍ: String(c[1]) asegura que .toLowerCase() funcione siempre
+        const nombreCliente = String(c[1] ?? "").toLowerCase();
+        const fecha = String(c[3] ?? "");
         return ((!cliente || nombreCliente.includes(cliente)) && (!fechaInicio || fecha.startsWith(fechaInicio)));
     }).map((c) => {
         const rowData = [
