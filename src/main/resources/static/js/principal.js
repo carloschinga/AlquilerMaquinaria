@@ -109,6 +109,22 @@ if (btnLogout) {
 
 // Funcion global para cargar vistas
 window.loadView = function(view) {
+    // --- INICIO BLOQUE LIMPIEZA DE INGENIERO ---
+    // 1. Cerrar cualquier alerta de SweetAlert que se haya quedado pegada
+    if (typeof Swal !== 'undefined') {
+        Swal.close();
+    }
+
+    // 2. Eliminar manualmente los backdrops (capas grises) de Bootstrap
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+
+    // 3. Restaurar el scroll del body por si se quedó bloqueado
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = '';
+    // --- FIN BLOQUE LIMPIEZA ---
+
     fetch(view)
       .then((res) => {
           if(!res.ok) throw new Error("Error cargando vista");
